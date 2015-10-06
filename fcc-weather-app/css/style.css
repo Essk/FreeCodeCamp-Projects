@@ -1,0 +1,83 @@
+.main {
+  font-size: large;
+  color: white;
+}
+
+.display {
+  height: 200px;
+  width: 200px;
+  border: 5px solid blue;
+  border-radius: 20px;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.box-display {
+  padding: 20px;
+  color: white;
+  text-align: center;
+  font-size: 40pt;
+}
+
+.central {
+  margin: 40px auto;
+  width: 600px;
+}
+.central div {
+  text-align: center;
+}
+
+span.climacon {
+  display: block;
+  text-align: center;
+  font-size: 80pt;
+}
+
+.freezing {
+  background-image: linear-gradient(#ffffff, #00ffff);
+}
+
+.cold {
+  background-image: linear-gradient(#00ffff, #0000ff);
+}
+
+.cool {
+  background-image: linear-gradient(#0000ff, #00ff00);
+}
+
+.temperate {
+  background-image: linear-gradient(#00ff00, yellow);
+}
+
+.warm {
+  background-image: linear-gradient(yellow, orange);
+}
+
+.hot {
+  background-image: linear-gradient(orange, #ff0000);
+}
+
+.climacon.thermometer {
+  margin-top: -20px;
+  font-size: 72pt;
+}
+
+.label {
+  float: left;
+  font-size: 16pt;
+  text-align: center;
+}
+
+.pressure {
+  font-size: 32pt;
+}
+
+.meta, .summary-icon, .summary {
+  border: 1px solid black;
+  height: 200px;
+}
+
+.switch-container {
+  width: 180px;
+  height: 40px;
+  background-color: red;
+}

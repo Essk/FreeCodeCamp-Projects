@@ -1,0 +1,80 @@
+@mixin gradient($top, $bottom){
+  background-image: linear-gradient($top, $bottom);
+}
+
+.main{
+  font-size: large;
+  color: white;
+  }
+.display{
+height: 200px;
+width: 200px;
+border: 5px solid blue;
+border-radius: 20px;
+  background-color:rgba(0, 0, 0, 0.5);
+}
+.box-display{
+  padding: 20px;
+color: white;
+  text-align: center;
+  font-size: 40pt;
+}
+.central{
+  margin: 40px auto;
+  width: 600px;
+  div{
+    text-align:center;
+  }
+}
+
+span.climacon{
+  display: block;
+  text-align: center;
+  font-size: 80pt;
+}
+
+.freezing{
+  @include gradient(#ffffff, #00ffff);
+}
+.cold {  
+  @include gradient(#00ffff, #0000ff);
+}
+.cool {  
+  @include gradient(#0000ff, #00ff00);
+}
+.temperate {  
+  @include gradient(#00ff00, yellow);
+}
+.warm {  
+  @include gradient(yellow, orange);
+}
+.hot {  
+  @include gradient(orange, #ff0000);
+}
+
+.climacon.thermometer{
+  margin-top:-20px;
+  font-size: 72pt;
+}
+.label{
+  float:left;
+  font-size: 16pt;
+  text-align: center;
+}
+
+.pressure{
+  font-size:32pt;
+}
+
+.meta, .summary-icon, .summary{
+  //float: left;
+ border: 1px solid black;
+  //width:180px;
+  height: 200px;
+}
+
+.switch-container{
+  width: 180px;
+  height: 40px;
+  background-color:red;
+}
