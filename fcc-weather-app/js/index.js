@@ -15,7 +15,10 @@ var iconLookup = {
 var latitude = '';
 var longitude = '';
 
-var setUnits = function(units) {
+var localUnits = null;
+var conditions = null;
+
+var seunitss = function(units, custom) {
   var tmpUnit, wsUnit;
   switch (units) {
     case "us":
@@ -34,6 +37,10 @@ var setUnits = function(units) {
       tmpUnit = "&deg;F";
       wsUnit = "kph";
       break;
+    case "custom":
+      tmpUnit = custom.temp;
+      wsUnit = custom.wind;
+      break;
     default:
       tmpUnit = "&deg;C";
       wsUnit = "mph";
@@ -45,46 +52,66 @@ var setUnits = function(units) {
 };
 
 var toC = function(units, temp) {
-  if (units === "F") {
+  var re = /([cCfF])/;
+  var shortUnits = units.tmpUnit.match(re)[0];
+  if (shortUnits === "F") {
     temp = (temp - 32) / 1.8;
   }
-  //console.log(temp);
   return temp;
 };
 
+var convertTemp = function(units){
+  var re = /([CF])/;
+  var shortUnits = units.tmpUnit.match(re)[0];
+  var newTemp;
+  if (shortUnits == "C") {
+    newTemp = Math.round((conditions.temp - 32) / 1.8);
+  } else if (shortUnits == "F"){
+    newTemp = Math.round((conditions.temp*1.8) + 32);
+  }
+  return newTemp;
+};
+
+var convertWindSpeed = function(units){
+  var re = /([mk])/;
+  var shortUnits = units.wsUnit.match(re)[0];
+  var newWS;
+  if (shortUnits == "m") {
+    newWS = Math.round(conditions.windSpeed/1.60934);
+  } else if (shortUnits == "k"){
+    newWS = Math.round(conditions.windSpeed*1.60934);
+  }
+  return newWS;
+};
+
 var setContent = function(units, conditions) {
-  
-  var localUnits = setUnits(units);
-  
   $("#summary-icon").addClass(iconLookup[conditions.icon]);
   $(".summary").html(conditions.summary);
- //document.createElement("span");
-  //tmpIcon.addClass("climacon");  
-  if (toC(units, conditions.temp) <= 0) { 
+  if (Math.round(toC(units, conditions.temp)) <= 0) {
  $(".temperature").addClass("freezing");
     var tmpIcon = "thermometer";
-  } else if (toC(units, conditions.temp) > 0 && 
-    toC(units, conditions.temp) <= 8) {
+  } else if (Math.round(toC(units, conditions.temp)) > 0 &&
+    Math.round(toC(units, conditions.temp)) <= 8) {
     $(".temperature").addClass("cold");
     tmpIcon = "thermometer low";
-  } else if (toC(units, conditions.temp) > 8 &&
-    toC(units, conditions.temp) <= 15) {
+  } else if (Math.round(toC(units, conditions.temp)) > 8 &&
+    Math.round(toC(units, conditions.temp)) <= 15) {
     $(".temperature").addClass("cool");
     tmpIcon = "thermometer medium-low";
-  } else if (toC(units, conditions.temp) > 15 &&
-    toC(units, conditions.temp) <= 21) {
+  } else if (Math.round(toC(units, conditions.temp)) > 15 &&
+    Math.round(toC(units, conditions.temp)) <= 21) {
  $(".temperature").addClass("temperate");
     tmpIcon = "thermometer medium-high";
-  } else if (toC(units, conditions.temp) > 21 &&
-    toC(units, conditions.temp) <= 27) {
+  } else if (Math.round(toC(units, conditions.temp)) > 21 &&
+    Math.round(toC(units, conditions.temp)) <= 27) {
     $(".temperature").addClass("warm");
     tmpIcon = "thermometer high";
-  } else if (toC(units, conditions.temp) > 27) {
+  } else if (Math.round(toC(units, conditions.temp)) > 27) {
     $(".temperature").addClass("hot");
     tmpIcon = "thermometer full";
   }
-    $(".temperature").html(conditions.temp  + localUnits.tmpUnit + "<span class='climacon " + tmpIcon +"'></span>");  
-  $(".wind-speed").html(conditions.windSpeed + localUnits.wsUnit+ "<div class='label'>Wind Speed</div>");
+    $(".temperature").html(conditions.temp.toString()  + localUnits.tmpUnit + "<span class='climacon " + tmpIcon +"'></span>");
+  $(".wind-speed").html(conditions.windSpeed.toString() + localUnits.wsUnit+ "<div class='label'>Wind Speed</div>");
     $(".pressure").html(conditions.pressure + "mB<div class='label'>Pressure</div>");
 };
 
@@ -100,7 +127,7 @@ function geoSuccess(position) {
 
 function geoFail(){
     //error
-    console.log("can't get location, using Glasgow, Scotland as an example");
+    console.log("Can't get location. Using Glasgow, Scotland as an example");
     latitude = 55.8628;
     longitude = -4.2542;
 }
@@ -117,7 +144,10 @@ var getDummyWeather = function() {
     "windSpeed": 6,
     "pressure": 1000
   };
-  setContent(units, conditions);
+  return {
+    "units" : units,
+    "conditions": conditions
+  };
 };
 
 var getWeather = function() {
@@ -138,7 +168,7 @@ var getWeather = function() {
 
     // Work with the response
     success: function(response) {
-      var units = getUnits(response.flags.units);
+      var units = geunitss(response.flags.units);
       var conditions = {
         "temp": response.currently.apparentTemperature,
         "summary": response.currently.summary,
@@ -146,15 +176,43 @@ var getWeather = function() {
         "windSpeed": response.currently.windSpeed,
         "pressure": response.currently.pressure
       };
-      setContent(units, conditions);
+      return {
+        "units" : units,
+        "conditions": conditions
+      };
 
     }
   });
 };
 
+function toggleSwitch(switchContainer){
+  var kids = $(switchContainer).children();
+  var unitClass = ($(switchContainer).attr('class').split(' ')[1]);
+  $(kids).each(function(index){
+    if($(this).hasClass("on")){
+      $(this).removeClass("on").addClass("off");
+    } else {
+      $(this).removeClass("off").addClass("on");
+      if (unitClass === "temp"){
+        localUnits.tmpUnit = $(this).html();
+        conditions.temp= convertTemp(localUnits);
+      } else if (unitClass === "wind") {
+        localUnits.wsUnit = $(this).html();
+        conditions.windSpeed= convertWindSpeed(localUnits);
+      }
+    }
+    setContent(localUnits,conditions);
+  });
+
+
+
+}
+
 $(document).ready(function() {
 
-
+  $(".switch-inner").click(function(){
+    toggleSwitch($(this).parent());
+  });
 
 
   // check for Geolocation support
@@ -167,6 +225,11 @@ $(document).ready(function() {
 
   }
 
+
+
   //getWeather();
-  getDummyWeather();
+  var fetchedWeather = getDummyWeather();
+  conditions = fetchedWeather.conditions;
+  localUnits = seunitss(fetchedWeather.units);
+  setContent(localUnits, conditions);
 });

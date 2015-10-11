@@ -8,10 +8,10 @@ var gulp   = require('gulp'),
     sourcemaps = require('gulp-sourcemaps');
 
 
-var sassOptions = {
-  errLogToConsole: true,
-    outputStyle: 'expanded'
-};
+//var sassOptions = {
+//  errLogToConsole: true,
+//    outputStyle: 'expanded'
+//};
 
 
 
@@ -34,7 +34,7 @@ gulp.task('jshint', function() {
 gulp.task('build-css', function(){
     return gulp.src(paths.scss)
         .pipe(sourcemaps.init())
-        .pipe(sass(sassOptions).on('error', sass.logError))
+        .pipe(sass())
         .pipe(sourcemaps.write())
         .pipe(gulp.dest('css/'))
 
@@ -46,14 +46,13 @@ gulp.task('browser-sync', function(){
         {
             server:{
                 baseDir:'./',
-                //directory: true
             }
         });
 });
 
 // configure which files to watch and what tasks to use on file changes
 gulp.task('watch', ['build-css','browser-sync'], function() {
-    gulp.watch('fcc-weather-app/index.html').on("change", browserSync.reload);
-    gulp.watch('fcc-weather-app/js/*.js', ['jshint']);
-    gulp.watch('fcc-weather-app/scss/*.scss', ['build-css']);
+    gulp.watch('index.html').on("change", browserSync.reload);
+    gulp.watch('js/*.js', ['jshint']);
+    gulp.watch('scss/*.scss', ['build-css']);
 });

@@ -5,17 +5,17 @@
 .main{
   font-size: large;
   color: white;
-  }
+}
 .display{
-height: 200px;
-width: 200px;
-border: 5px solid blue;
-border-radius: 20px;
+  height: 200px;
+  width: 200px;
+  border: 5px solid blue;
+  border-radius: 20px;
   background-color:rgba(0, 0, 0, 0.5);
 }
 .box-display{
   padding: 20px;
-color: white;
+  color: white;
   text-align: center;
   font-size: 40pt;
 }
@@ -36,19 +36,19 @@ span.climacon{
 .freezing{
   @include gradient(#ffffff, #00ffff);
 }
-.cold {  
+.cold {
   @include gradient(#00ffff, #0000ff);
 }
-.cool {  
+.cool {
   @include gradient(#0000ff, #00ff00);
 }
-.temperate {  
+.temperate {
   @include gradient(#00ff00, yellow);
 }
-.warm {  
+.warm {
   @include gradient(yellow, orange);
 }
-.hot {  
+.hot {
   @include gradient(orange, #ff0000);
 }
 
@@ -68,13 +68,39 @@ span.climacon{
 
 .meta, .summary-icon, .summary{
   //float: left;
- border: 1px solid black;
+  border: 1px solid black;
   //width:180px;
   height: 200px;
 }
 
 .switch-container{
-  width: 180px;
+  display: flex;
+  justify-content:space-around;
+  align-items: center;
+  width: 120px;
   height: 40px;
   background-color:green;
+  border: 1px solid white;
+  margin: 20px 5px 5px 20px;
+  border-radius: 20px;
+  &.temp>.switch-inner:first-child, &.wind>.switch-inner:first-child{
+      border-radius: 20px 0 0 20px;
+  }
+  &.temp>.switch-inner:last-child, &.wind>.switch-inner:last-child{
+    border-radius: 0 20px 20px 0;
+  }
+}
+
+.switch-inner{
+  //border-radius: inherit;
+  flex-grow: 1;
+  float: left;
+  //border: 1px solid yellow;
+  &.on{
+    background: green;
+  }
+  &.off{
+    background: white;
+    height: 100%;
+  }
 }
