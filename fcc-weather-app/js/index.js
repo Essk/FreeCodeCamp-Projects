@@ -18,7 +18,7 @@ var longitude = '';
 var localUnits = null;
 var conditions = null;
 
-var seunitss = function(units, custom) {
+var setUnits = function(units, custom) {
   var tmpUnit, wsUnit;
   switch (units) {
     case "us":
@@ -52,6 +52,7 @@ var seunitss = function(units, custom) {
 };
 
 var toC = function(units, temp) {
+  console.log(units);
   var re = /([cCfF])/;
   var shortUnits = units.tmpUnit.match(re)[0];
   if (shortUnits === "F") {
@@ -115,14 +116,15 @@ var setContent = function(units, conditions) {
     $(".pressure").html(conditions.pressure + "mB<div class='label'>Pressure</div>");
 };
 
-function getLocation(geolocatio) {
-  var geo = geolocatio;
+function getLocation(geolocation) {
+  var geo = geolocation;
   geo.getCurrentPosition(geoSuccess, geoFail);
 }
 
 function geoSuccess(position) {
   latitude = position.coords.latitude;
   longitude = position.coords.longitude;
+  getWeather(latitude, longitude);
 }
 
 function geoFail(){
@@ -130,6 +132,7 @@ function geoFail(){
     console.log("Can't get location. Using Glasgow, Scotland as an example");
     latitude = 55.8628;
     longitude = -4.2542;
+    getWeather(latitude, longitude);
 }
 
 
@@ -150,10 +153,13 @@ var getDummyWeather = function() {
   };
 };
 
-var getWeather = function() {
+var getWeather = function(lat, long) {
+
+
 
   $.ajax({
-    url: "https://api.forecast.io/forecast/58e2f98e146014450cb46f9d18b08675/"+ latitude +"," +longitude,
+    //url: "https://api.forecast.io/forecast/58e2f98e146014450cb46f9d18b08675/51.5516894,-0.1706111",
+    url: "https://api.forecast.io/forecast/58e2f98e146014450cb46f9d18b08675/"+ lat +"," +long,
 
     // The name of the callback parameter, as specified by the service
     jsonp: "callback",
@@ -168,22 +174,30 @@ var getWeather = function() {
 
     // Work with the response
     success: function(response) {
-      var units = geunitss(response.flags.units);
-      var conditions = {
+      localUnits = setUnits(response.flags.units);
+      conditions = {
         "temp": response.currently.apparentTemperature,
         "summary": response.currently.summary,
         "icon": response.currently.icon,
         "windSpeed": response.currently.windSpeed,
         "pressure": response.currently.pressure
-      };
-      return {
-        "units" : units,
-        "conditions": conditions
-      };
+          };
+      setContent(localUnits, conditions);
+    },
+    error: function(){
+      console.log("Could not get weather data, using dummy data");
+      dummyData = getDummyWeather();
+      localUnits = setUnits(dummyData.units);
+      conditions = dummyData.conditions;
 
+
+      setContent(localUnits, conditions);
     }
+
   });
 };
+
+
 
 function toggleSwitch(switchContainer){
   var kids = $(switchContainer).children();
@@ -228,15 +242,5 @@ $(document).ready(function() {
     geoFail();
 
   }
-
-
-
-  //getWeather();
-  var fetchedWeather = getDummyWeather();
-  conditions = fetchedWeather.conditions;
-  localUnits = seunitss(fetchedWeather.units);
-  setContent(localUnits, conditions);
-
-
 
 });
