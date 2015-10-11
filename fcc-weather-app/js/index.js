@@ -52,7 +52,7 @@ var setUnits = function(units, custom) {
 };
 
 var toC = function(units, temp) {
-  console.log(units);
+
   var re = /([cCfF])/;
   var shortUnits = units.tmpUnit.match(re)[0];
   if (shortUnits === "F") {
@@ -111,9 +111,9 @@ var setContent = function(units, conditions) {
     $(".temperature").addClass("hot");
     tmpIcon = "thermometer full";
   }
-    $(".temperature").html(conditions.temp.toString()  + localUnits.tmpUnit + "<span class='climacon " + tmpIcon +"'></span>");
-  $(".wind-speed").html(conditions.windSpeed.toString() + localUnits.wsUnit+ "<div class='label'>Wind Speed</div>");
-    $(".pressure").html(conditions.pressure + "mB<div class='label'>Pressure</div>");
+    $(".temperature").html(Math.round(conditions.temp).toString()  + localUnits.tmpUnit + "<span class='climacon " + tmpIcon +"'></span>");
+  $(".wind-speed").html(Math.round(conditions.windSpeed).toString() + localUnits.wsUnit+ "<div class='label'>Wind Speed</div>");
+    $(".pressure").html(Math.round(conditions.pressure).toString() + "mB<div class='label'>Pressure</div>");
 };
 
 function getLocation(geolocation) {
