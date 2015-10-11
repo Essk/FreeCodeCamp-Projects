@@ -10,7 +10,10 @@ var iconLookup = {
   "cloudy": "cloud",
   "partly-cloudy-day": "cloud sun",
   "partly-cloudy-night": "cloud moon"
-}
+};
+
+var latitude = '';
+var longitude = '';
 
 var setUnits = function(units) {
   var tmpUnit, wsUnit;
@@ -39,7 +42,7 @@ var setUnits = function(units) {
     "tmpUnit": tmpUnit,
     "wsUnit": wsUnit
   };
-}
+};
 
 var toC = function(units, temp) {
   if (units === "F") {
@@ -47,7 +50,7 @@ var toC = function(units, temp) {
   }
   //console.log(temp);
   return temp;
-}
+};
 
 var setContent = function(units, conditions) {
   
@@ -83,22 +86,26 @@ var setContent = function(units, conditions) {
     $(".temperature").html(conditions.temp  + localUnits.tmpUnit + "<span class='climacon " + tmpIcon +"'></span>");  
   $(".wind-speed").html(conditions.windSpeed + localUnits.wsUnit+ "<div class='label'>Wind Speed</div>");
     $(".pressure").html(conditions.pressure + "mB<div class='label'>Pressure</div>");
+};
+
+function getLocation(geolocatio) {
+  var geo = geolocatio;
+  geo.getCurrentPosition(geoSuccess, geoFail);
 }
 
-function getLocation() {
-  var geolocation = navigator.geolocation;
-  geolocation.getCurrentPosition(showLocation, errorHandler);
+function geoSuccess(position) {
+  latitude = position.coords.latitude;
+  longitude = position.coords.longitude;
 }
 
-function showLocation(position) {
-  var latitude = position.coords.latitude;
-  var longitude = position.coords.longitude;
- // console.log(latitude + ' : ' + longitude);
+function geoFail(){
+    //error
+    console.log("can't get location, using Glasgow, Scotland as an example");
+    latitude = 55.8628;
+    longitude = -4.2542;
 }
 
-function errorHandler() {
-  console.log("the world is on fire!");
-}
+
 
 var getDummyWeather = function() {
   console.log("getDummyWeather");
@@ -108,15 +115,15 @@ var getDummyWeather = function() {
     "summary": "made up summary",
     "icon": "clear-day",
     "windSpeed": 6,
-    "pressure": 1000,
-  }
+    "pressure": 1000
+  };
   setContent(units, conditions);
-}
+};
 
 var getWeather = function() {
 
   $.ajax({
-    url: "https://api.forecast.io/forecast/58e2f98e146014450cb46f9d18b08675/55.8630044,-4.3093905",
+    url: "https://api.forecast.io/forecast/58e2f98e146014450cb46f9d18b08675/"+ latitude +"," +longitude,
 
     // The name of the callback parameter, as specified by the service
     jsonp: "callback",
@@ -126,7 +133,7 @@ var getWeather = function() {
 
     // Tell Forecast.io what we want
     data: {
-      units: "auto",
+      units: "auto"
     },
 
     // Work with the response
@@ -137,23 +144,29 @@ var getWeather = function() {
         "summary": response.currently.summary,
         "icon": response.currently.icon,
         "windSpeed": response.currently.windSpeed,
-        "pressure": response.currently.pressure,
-      }
+        "pressure": response.currently.pressure
+      };
       setContent(units, conditions);
 
     }
   });
-}
+};
 
 $(document).ready(function() {
-  getLocation();
-  getDummyWeather();
-  //getWeather();
+
+
+
 
   // check for Geolocation support
-  if (navigator.geolocation) {
-    console.log('Geolocation is supported!');
+  if ( navigator.geolocation) {
+    //console.log('Geolocation is supported!');
+    getLocation(navigator.geolocation);
   } else {
     console.log('Geolocation is not supported for this Browser/OS version yet.');
+    geoFail();
+
   }
+
+  //getWeather();
+  getDummyWeather();
 });

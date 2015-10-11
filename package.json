@@ -1,0 +1,26 @@
+{
+  "name": "fcc-projects",
+  "preferGlobal": false,
+  "version": "0.0.1",
+  "author": "Sarah Rimron-Soutter<sarah@watersidedevelopment.co.uk>",
+  "description": "a collection of FreeCodeCamp Projects",
+  "license": "MIT",
+  "engines": {
+    "node": ">=0.10"
+  },
+  "scripts": {
+    "start": "ws"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "browser-sync": "2.9.10",
+    "gulp": "3.9.0",
+    "gulp-autoprefixer": "3.0.2",
+    "gulp-jshint": "1.11.2",
+    "gulp-livereload": "3.8.1",
+    "gulp-sourcemaps": "1.6.0",
+    "gulp-util": "3.0.6",
+    "jshint-stylish": "2.0.1",
+    "local-web-server": "0.5.23"
+  }
+}
