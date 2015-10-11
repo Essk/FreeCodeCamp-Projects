@@ -214,6 +214,10 @@ $(document).ready(function() {
     toggleSwitch($(this).parent());
   });
 
+  $(".credits-title").click(function(){
+    $(".credits-info").slideToggle();
+  });
+
 
   // check for Geolocation support
   if ( navigator.geolocation) {
@@ -232,4 +236,7 @@ $(document).ready(function() {
   conditions = fetchedWeather.conditions;
   localUnits = seunitss(fetchedWeather.units);
   setContent(localUnits, conditions);
+
+
+
 });

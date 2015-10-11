@@ -5,13 +5,14 @@
 .main{
   font-size: large;
   color: white;
+  background-image: url(https://dl.dropboxusercontent.com/u/2741374/symphony.png);
 }
 .display{
   height: 200px;
-  width: 200px;
-  border: 5px solid blue;
   border-radius: 20px;
   background-color:rgba(0, 0, 0, 0.5);
+  border: 4px solid pink;
+
 }
 .box-display{
   padding: 20px;
@@ -21,7 +22,6 @@
 }
 .central{
   margin: 40px auto;
-  width: 600px;
   div{
     text-align:center;
   }
@@ -67,9 +67,6 @@ span.climacon{
 }
 
 .meta, .summary-icon, .summary{
-  //float: left;
-  border: 1px solid black;
-  //width:180px;
   height: 200px;
 }
 
@@ -92,10 +89,8 @@ span.climacon{
 }
 
 .switch-inner{
-  //border-radius: inherit;
   flex-grow: 1;
   float: left;
-  //border: 1px solid yellow;
   &.on{
     background: green;
   }
@@ -103,4 +98,21 @@ span.climacon{
     background: white;
     height: 100%;
   }
+}
+
+.credits{
+  background-color: hotpink;
+  border-radius: 20px;
+  color: black;
+}
+
+.credits-info{
+  display: none;
+}
+
+.page-title{
+  background: none;
+  color: hotpink;
+  text-align: center;
+
 }
