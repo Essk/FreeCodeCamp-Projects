@@ -11,7 +11,7 @@
   height: 200px;
   border-radius: 20px;
   background-color:rgba(0, 0, 0, 0.5);
-  border: 4px solid pink;
+  border: 4px solid deeppink;
 
 }
 .box-display{
@@ -76,7 +76,7 @@ span.climacon{
   align-items: center;
   width: 120px;
   height: 40px;
-  background-color:green;
+  background-color:deeppink;
   border: 1px solid white;
   margin: 20px 5px 5px 20px;
   border-radius: 20px;
@@ -92,7 +92,7 @@ span.climacon{
   flex-grow: 1;
   float: left;
   &.on{
-    background: green;
+    background: deeppink;
   }
   &.off{
     background: white;
