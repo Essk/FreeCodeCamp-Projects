@@ -1,12 +1,15 @@
 var minutes = 10;
 var seconds = '00';
 var counter= minutes * 60;
+var timer = {
+    state:'stopped'
+};
 
 function increment(){
     counter++;
     seconds = counter%60;
     if (seconds === 0){
-        minutes++
+        minutes++;
     }
     $(".main-timer").html(minutes + ':' + seconds);
 }
@@ -25,8 +28,25 @@ function decrement(){
 
 }
 
-$(document).ready(function(){
+function startStop(timer) {
+    if (timer.state === 'stopped') {
+        timer.ID = window.setInterval(decrement, 1000);
+        timer.state = 'started';
+    } else {
+        clearInterval(timer.ID);
+        timer.state = 'stopped';
+    }
+}
 
-    var timerID = window.setInterval(decrement, 1000);
-    $(".main-timer").html(minutes + ':' + seconds);
-});
+
+
+$(document).ready(function() {
+        $(".main-timer").html(minutes + ':' + seconds);
+
+        $(".main-timer").click(function () {
+            startStop(timer);
+        });
+    }
+    );
+
+

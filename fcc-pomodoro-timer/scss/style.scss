@@ -1,0 +1,10 @@
+.main-timer-background{
+  background: red;
+  width: 50%;
+  margin: auto;
+  height: 200px;
+  >.main-timer{
+    height: inherit;
+    background: green;
+  }
+}

@@ -1,0 +1,10 @@
+.main-timer-background {
+  background: red;
+  width: 50%;
+  margin: auto;
+  height: 200px; }
+  .main-timer-background > .main-timer {
+    height: inherit;
+    background: green; }
+
+/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInN0eWxlLnNjc3MiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUEsc0JBQXNCLENBQUE7RUFDcEIsVUFBVSxFQUFFLEdBQUk7RUFDaEIsS0FBSyxFQUFFLEdBQUk7RUFDWCxNQUFNLEVBQUUsSUFBSztFQUNiLE1BQU0sRUFBRSxLQUFNLEdBSk87RUFLcEIsc0JBQXNCLEdBQUcsV0FBVyxDQUF6QjtJQUNWLE1BQU0sRUFBRSxPQUFRO0lBQ2hCLFVBQVUsRUFBRSxLQUFNLEdBRlAiLCJmaWxlIjoic3R5bGUuY3NzIiwic291cmNlc0NvbnRlbnQiOlsiLm1haW4tdGltZXItYmFja2dyb3VuZHtcbiAgYmFja2dyb3VuZDogcmVkO1xuICB3aWR0aDogNTAlO1xuICBtYXJnaW46IGF1dG87XG4gIGhlaWdodDogMjAwcHg7XG4gID4ubWFpbi10aW1lcntcbiAgICBoZWlnaHQ6IGluaGVyaXQ7XG4gICAgYmFja2dyb3VuZDogZ3JlZW47XG4gIH1cbn0iXSwic291cmNlUm9vdCI6Ii9zb3VyY2UvIn0= */
