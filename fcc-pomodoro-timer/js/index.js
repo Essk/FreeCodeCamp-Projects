@@ -58,26 +58,26 @@ $(document).ready(function() {
 
 
         $(".main-timer").html(minutes + ':' + seconds);
-        $(".current-break").html(5);
-        $(".current-session").html(workSession.length);
+        $(".current-break").html(breakSession.length);
+        $(".current-work").html(workSession.length);
 
         $(".main-timer").click(function () {
             startStop(timer);
         });
 
-        $(".change-break > .add").click(function(){
+        $(".change-break  .add").click(function(){
             breakSession.increaseLength(1, $(this).siblings().last());
         });
 
-        $(".change-timer >.add").click(function(){
+        $(".change-work .add").click(function(){
             workSession.increaseLength(5, $(this).siblings().last());
         });
 
-        $(".change-break > .minus").click(function(){
+        $(".change-break  .minus").click(function(){
             breakSession.decreaseLength(1, $(this).siblings().last());
         });
 
-        $(".change-timer > .minus").click(function(){
+        $(".change-work  .minus").click(function(){
             workSession.decreaseLength(5, $(this).siblings().last());
         });
     }

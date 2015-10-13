@@ -2,9 +2,30 @@
   background: red;
   width: 50%;
   margin: auto;
+  margin-top:50px;
   height: 200px;
+  text-align: center;
   >.main-timer{
-    height: inherit;
+    position: relative;
+    top: 40%;
     background: green;
+  }
+}
+
+.timer-controls {
+
+  margin-bottom: 5px;
+  & > ul > li {
+    display: block;
+    float: left;
+    border: 1px solid green;
+    width: 50%;
+    ul {
+      width: 25%;
+      margin: auto;
+      border: 1px solid blue;
+      border: 1px solid blue;
+      text-align: center;
+    }
   }
 }
