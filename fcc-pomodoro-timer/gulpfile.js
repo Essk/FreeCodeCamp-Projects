@@ -53,6 +53,7 @@ gulp.task('browser-sync', function(){
 // configure which files to watch and what tasks to use on file changes
 gulp.task('watch', ['build-css','browser-sync'], function() {
     gulp.watch('index.html').on("change", browserSync.reload);
+    gulp.watch('assets/images*.svg').on("change", browserSync.reload);
     gulp.watch('js/*.js', ['jshint']);
     gulp.watch('scss/*.scss', ['build-css']);
 });

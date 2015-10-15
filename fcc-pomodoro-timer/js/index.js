@@ -61,7 +61,7 @@ $(document).ready(function() {
         $(".current-break").html(breakSession.length);
         $(".current-work").html(workSession.length);
 
-        $(".main-timer").click(function () {
+        $(".main-timer-background").click(function () {
             startStop(timer);
         });
 
