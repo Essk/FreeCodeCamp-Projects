@@ -13,9 +13,7 @@ Session.prototype.increaseLength = function(amount, update){
 Session.prototype.decreaseLength = function(amount, update){
     if((this.remaining - amount) > 0) {
         this.remaining = this.remaining - amount;
-        //console.log(this.length);
         update.html(this.remaining);
-
     }
 };
 
@@ -24,17 +22,89 @@ Session.prototype.reset = function(){
 };
 
 
-var workSession = new Session(0.5, "work");
+var workSession = new Session(1, "work");
 var breakSession = new Session(5, "break");
 
-
-
-var minutes = workSession.length;
-var seconds = '00';
-var counter= minutes * 60;
-var timer = {
-    state:'stopped'
+var Timer = function(session){
+    this.session = session;
+    this.state = 'stopped';
+    this.minutes = this.session.length;
+    this.originLength = this.session.length;
+    this.seconds = '00';
+    this.counter = this.minutes*60;
 };
+var timer = new Timer(workSession);
+
+Timer.prototype.updateHTML = function(element){
+    this.test('test updateHTML');
+    element.html(this.minutes + ':' + this.seconds);
+};
+
+Timer.prototype.test = function(message){
+    console.log(message);
+};
+
+Timer.prototype.checkSessionLength = function(){
+    //console.log(this.session.length);
+    //console.log(this.originLength);
+    if (this.session.length != this.originLength){
+        var diff =  this.session.length - this.originLength;
+        this.originLength = this.session.length;
+        console.log('adding' + diff*60 );
+        this.counter = this.counter + (diff*60);
+        console.log(this.counter);
+    }
+
+};
+
+
+
+Timer.prototype.decrement = function (){
+    this.counter--;
+    this.checkSessionLength();
+    this.seconds = this.counter%60;
+    this.minutes = (this.counter-this.counter%60)/60;
+    if (this.seconds === 59){
+        this.minutes--;
+    }
+    if (this.seconds<10){
+        this.seconds = '0' + this.seconds;
+    }
+
+    if (this.counter === 0) {
+        this.reset();
+        console.log("resetting");
+    }
+
+    this.updateHTML($(".main-timer"));
+};
+
+
+
+Timer.prototype.reset = function(){
+    this.state = 'stopped';
+    this.minutes = this.session.length;
+    this.seconds = '00';
+    this.counter = this.session.remaining*60;
+};
+
+Timer.prototype.startStop = function(){
+
+    //bind funkiness. needed because I think window.setInterval messes with "this" and so
+    // timer methods then fall outside the scope
+   var boundDecrement =  this.decrement.bind(this);
+    if (this.state === 'stopped') {
+        this.ID = window.setInterval(boundDecrement, 1000);
+        this.state = 'started';
+    } else {
+        clearInterval(this.ID);
+        this.state = 'stopped';
+    }
+};
+
+
+
+
 
 function switchTo(session){
     var minutes = session.length;
@@ -43,48 +113,20 @@ function switchTo(session){
     $(".main-timer").html(minutes + ':' + seconds);
 }
 
-Session.prototype.decrement = function (){
 
-    counter--;
-    seconds = counter%60;
-    if (seconds === 59){
-        minutes--;
-    }
-    if (seconds<10){
-        seconds = '0' + seconds;
-    }
 
-    if (this.remaining === 0) {
-        this.reset();
-        console.log("resetting");
-        this.type == 'work'? switchTo(breakSession):switchTo(workSession);
-    }
 
-    $(".main-timer").html(minutes + ':' + seconds);
-
-};
-
-function startStop(timer) {
-    if (timer.state === 'stopped') {
-        timer.ID = window.setInterval(decrement, 1000);
-        timer.state = 'started';
-    } else {
-        clearInterval(timer.ID);
-        timer.state = 'stopped';
-
-    }
-}
 
 
 $(document).ready(function() {
 
 
-        $(".main-timer").html(minutes + ':' + seconds);
+        $(".main-timer").html(timer.minutes + ':' + timer.seconds);
         $(".current-break").html(breakSession.length);
         $(".current-work").html(workSession.length);
 
         $(".main-timer-background").click(function () {
-            startStop(timer);
+            timer.startStop();
         });
 
         $(".change-break  .add").click(function(){
