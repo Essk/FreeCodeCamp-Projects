@@ -45,8 +45,6 @@ Timer.prototype.test = function(message){
 };
 
 Timer.prototype.checkSessionLength = function(){
-    //console.log(this.session.length);
-    //console.log(this.originLength);
     if (this.session.length != this.originLength){
         var diff =  this.session.length - this.originLength;
         this.originLength = this.session.length;
@@ -82,10 +80,15 @@ Timer.prototype.decrement = function (){
 
 
 Timer.prototype.reset = function(){
-    this.state = 'stopped';
-    this.minutes = this.session.length;
-    this.seconds = '00';
-    this.counter = this.session.remaining*60;
+    this.playSound();
+    this.startStop();
+    if(this.session.type === "work"){
+        this.switchTo(breakSession);
+    } else if (this.session.type === "break") {
+        this.switchTo(breakSession);
+    }
+
+
 };
 
 Timer.prototype.startStop = function(){
@@ -102,16 +105,18 @@ Timer.prototype.startStop = function(){
     }
 };
 
+Timer.prototype.playSound = function (){
+    console.log('BINGBONG!!');
+};
 
 
 
 
-function switchTo(session){
-    var minutes = session.length;
-    var seconds = '00';
-    counter= minutes * 60;
-    $(".main-timer").html(minutes + ':' + seconds);
-}
+
+Timer.prototype.switchTo = function(session){
+    this.session = session;
+    this.startStop();
+};
 
 
 
